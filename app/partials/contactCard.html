@@ -1,0 +1,59 @@
+
+<!-- <h1>{{title.str}}</h1> -->
+<li  ng-repeat-start="friend in friends track by friend.id" >
+<h2>Directive: {{$index}}</h2>
+<p> name:{{ friend.name}}
+objectId:{{friend.id}}</p>
+
+
+<div class="btn-group">
+	<label id='{{$index}}' ng-click="clickAge(friend.id);scrollTo(friend.id);"  class="btn btn-primary"  ng-class="{test: checkValue1(), test2:checkValue3(5)}">   age: {{friend.age}} </label>
+	<label ng-click="clickPub(friend.id);scrollTo(friend.id);" class="btn btn-primary" >pub: {{friend.pub}} </label>
+	<label ng-click="clickPop(friend.id);scrollTo(friend.id);" class="btn btn-primary" >pop:{{friend.pop}}</label>
+	<label ng-click="clickType(friend.id);scrollTo(friend.id);"class="btn btn-primary"  >type:{{friend.type}}</label>
+
+</div>
+ 
+</li>
+ <div ng-repeat-end> </div>
+
+
+
+<!--
+    <div class="col-md-10">
+      <ul class="phones">
+        <li ng-repeat="phone in phones | filter:query | orderBy:orderProp" class="thumbnail">
+          <a href="#/phones/{{phone.id}}" class="thumb">
+    
+          </a>
+          <a href="#/phones/{{phone.id}}">{{phone.name}}</a>
+          <p>{{phone.snippet}}</p>
+          <a href ng-model="query.age" ng-click="sortPopular(phone.id)"  class="label label-average" ng-class="{test: checkValue1(), test2:checkValue3(5)}" >{{phone.id}}</a>
+          <a href ng-click="sortPub(phone.name)"  class="label label-publication">{{phone.name}}</a>
+           <a href ng-click="noHrefTest('name')"  class="label label-average" >Entertainment</a>
+        </li>
+      </ul>
+    </div>
+    -->
+
+
+<!--
+
+    <div  ng-repeat-start="friend in friends track by friend.id" >
+<h2>Directive: {{$index}}</h2>
+<span> name:{{ friend.name}}</span>
+<span>objectId:{{friend.id}}</span>
+
+
+<ul class="phones">
+<li><a id='{{$index}}' href ng-click="clickAge(friend.id);scrollTo(friend.id);">   age: {{friend.age}} </a> </li>
+ <li><a href ng-click="clickPub(friend.id);scrollTo(friend.id);">pub: {{friend.pub}} </a> </li>
+<li><a href ng-click="clickPop(friend.id);scrollTo(friend.id);"> pop:{{friend.pop}}</a></li>
+<li><a href ng-click="clickType(friend.id);scrollTo(friend.id);">type:{{friend.type}} </a></li>
+
+</ul>
+</div >
+
+<div ng-repeat-end> </div>
+
+-->

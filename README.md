@@ -295,3 +295,81 @@ For more information on AngularJS please check out http://angularjs.org/
 [karma]: http://karma-runner.github.io
 [travis]: https://travis-ci.org/
 [http-server]: https://github.com/nodeapps/http-server
+
+
+## Construction of the APP
+
+MVC Patterns
+
+VIEW:
+partials - sections.html (phones > contact-Card)
+                    - contactCard.html
+
+MODEL
+apps - app.js (phonecatApp)
+        'ngRoute',
+        'phonecatControllers'
+              PhoneListCtrl (ArticlesCtrl)
+                    'Phone'
+              dataController (DataCtrl)
+                    'data','tagSorterController', '$location','$anchorScroll','tagSortCriteria'
+        'phonecatFilters' (seems empty / useless)
+                    checkMark
+        'phonecatServices'
+                    Phone (Article)
+                        Resource
+                    tagSortCriteria (Same)
+                    data
+                    tagSorterController (tagSorterCtrl)
+                         '$filter', 'data','tagSortCriteria'
+                    asyncService
+        'phonecatDirectives'
+                    contactCard (Same)
+                            'tagSorterController'
+                    scrollup (Same)
+                            'tagSortCriteria'
+        'ui.bootstrap'
+
+
+##Asyncronous event
+
+http://stackoverflow.com/questions/11972026/delaying-angularjs-route-change-until-model-loaded-to-prevent-flicker
+SUPER userful
+http://blog.xebia.com/2014/02/23/promises-and-design-patterns-in-angularjs/  
+http://www.dwmkerr.com/promises-in-angularjs-the-definitive-guide/
+https://docs.angularjs.org/api/ngResource/service/$resource
+http://plnkr.co/edit/LZad4ZyEYjrbKiTPbAwu?p=info
+
+http://chariotsolutions.com/blog/post/angularjs-corner-using-promises-q-handle-asynchronous-calls/ (easy and straightforward, no need to link to the view)
+http://stackoverflow.com/questions/12497590/how-do-you-handle-asynchronous-data-in-directives-for-angularjs
+
+use page state
+http://embed.plnkr.co/LZad4ZyEYjrbKiTPbAwu/preview
+
+##Use ngmin
+https://github.com/btford/grunt-ngmin
+
+##BUGS
+http://technokayiti.blogspot.com/2013/06/lesson-5-angularjs-tutorial-backend.html
+https://www.npmjs.com/package/cors
+
+
+In your ExpressJS app on node.js, do the following with your routes:
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+app.get('/', function(req, res, next) {
+  // Handle the get for this route
+});
+
+app.post('/', function(req, res, next) {
+ // Handle the post for this route
+});
+
+##EXPRESS ANGULAR
+https://www.npmjs.com/package/generator-express-angular
+
