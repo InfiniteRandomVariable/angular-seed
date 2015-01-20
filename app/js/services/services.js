@@ -12,16 +12,71 @@ phonecatServices
    // var urls = ["http://api.github.com/gists"];
    // var urls = ["http://www.inorthwind.com/Service1.svc/getAllCustomers"];
 
-    //var urls = ["/app/phones/rottentomatoes/789.json"]
-     var urls = ["http://s3-us-west-1.amazonaws.com/data.hotoppy.com/rottentomatoes/789.json"];
+   //var urls = ["file:///Users/pro001/Desktop/Dev/Learning/tests/angular/angular-seed/app/phones/rottentomatoes/789.json"];
+  //  var urls = ["app/phones/rottentomatoes/789.json"];
+      var d1 = new Date();
+      // d1.toUTCString();
+      //var time = parseInt(Math.floor(d1.getTime()/ 1000000), 10);
+
+      //30 minutes intervals
+      var durationMins = 30;
+
+      var time = parseInt(d1.getTime()/60/1000/durationMins);
+    //var base = "http://data.hotoppy.com";
+    var base = "http://s3-us-west-1.amazonaws.com/data.hotoppy.com";
+    //var publications = ["amazonbooks", "atlantic", "billboard", "guardian", "hulu", "nydailynews", "nytimes", "rottentomatoes", "techcrunch", "wired", "youtube"];
+    var publications = ["nytimes",
+                        "guardian",
+                        "atlantic",
+                        "nydailynews",
+                        "youtube",
+                        "hulu", 
+                        "wired", 
+                        "bloomberg", 
+                        "techcrunch", 
+                        "wsj", 
+                        "amazonbooks", 
+                        "rottentomatoes", 
+                        "billboard"  ];
+
+    var urls = [];
+    var pubLen = publications.length;
+    for (var c = 0; c < pubLen; c++ ){
+      //789803
+      //var theU = base + '/' + publications[c] + '/' + time.toString() + '.json';
+      var theU = base + '/' + publications[c] + '/' + '789850' + '.json';
+      console.log(theU);
+      urls.push(theU);
+    }
+
+    // var urls = ["http://s3-us-west-1.amazonaws.com/data.hotoppy.com/nytimes/1421567.json",
+    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/guardian/1421619.json",
+    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/atlantic/1421618.json",
+    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/nydailynews/1421619.json",
+    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/youtube/1421619.json",
+    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/hulu/1421619.json",
+    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/wired/1421619.json",
+    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/bloomberg/1421620.json",
+    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/techcrunch/1421618.json",
+    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/wsj/1421619.json",
+    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/amazonbooks/1421620.json",
+    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/rottentomatoes/1421619.json",
+    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/billboard/1421620.json"];
+
+     //var urls = ["http://s3-us-west-1.amazonaws.com/data.hotoppy.com/amazonbooks/1421569.json"];                
+
+
+   // var urls = ["http://s3-us-west-1.amazonaws.com/data.hotoppy.com/billboard/1421396.json", "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/rottentomatoes/789.json"];
     return asyncService.loadDataFromUrls(urls);
   }
 })
 .factory('tagSortCriteria',function() {
-	
-  	var POP = 'pop';
+
+  //http://ejohn.org/blog/javascript-getters-and-setters/
+	  var SCORE = 'score';
+  	var POP = 'topCommentNum';
   	var PUB = 'pub';
-  	var TYPE = 'type';
+  	var TYPE = 'tag';
   	var AGE = 'age';
     var query = {
         selectedId: -1,
@@ -36,9 +91,26 @@ phonecatServices
     //if same selection string and same mode as the previous records trigger reset mode
     // else set the mode
 
-    	query.mode = (query.mode === undefined || MODE === undefined) ? AGE: MODE.toString();
+      var didChangeMode = query.mode != MODE;
+      if(query.mode === undefined || MODE === undefined){
+          query.mode = AGE;
+
+          return;
+      }else if ( didChangeMode){
+
+          query.mode = MODE.toString();
+          query.reverse = true;
+        return;  
+      }else {
+
+        query.reverse = !query.reverse;
+      }
+      
+    	//query.mode = (query.mode === undefined || MODE === undefined) ? AGE: MODE.toString();
     	console.log('Query.Mode: ', query.mode);
-      query.reverse = (query.mode === TYPE || query.mode === PUB) ? false: !query.reverse;
+      
+
+      //query.reverse = (query.mode === TYPE || query.mode === PUB) ? false: !query.reverse;
 
     	
     };
@@ -48,6 +120,9 @@ phonecatServices
       popMode:function(msg){
       	setQueryOrResetToAge(msg,POP);
       },
+      scoreMode:function(msg){
+        setQueryOrResetToAge(msg,SCORE);
+      },      
       ageMode:function(msg){
       	setQueryOrResetToAge(msg,AGE);
       },
@@ -59,6 +134,7 @@ phonecatServices
       },
       query:function(){
       	console.log(' 1 query positions start: ', query.positions.start, query.positions.end, 'queryMode: ', query.mode);
+        //WARNING: change to private object and replace this with getter functions
       	return query;
       },
       setPositions:function(positions){
@@ -97,6 +173,9 @@ phonecatServices
       PUB:function(){
       	return PUB;
       },
+      SCORE:function(){
+        return SCORE;
+      },      
       TYPE:function(){
       	return TYPE;
       },
@@ -127,54 +206,14 @@ phonecatServices
 .factory('data', function() {
 
 	var initData = false;
-    var friends = [
-      { name: '1John',    phone: '555-1212',    age: 10,		msg:'hello john',	pub:'NYT',		type:'Life',			pop:4},
-      { name: '2Mary',    phone: '555-9876',    age: 70,		msg:'hello john',	pub:'GDN',		type:'Politics',		pop:95 },
-      { name: '3Mike',    phone: '555-4321',    age: 1,		msg:'hello john',	pub:'WAPOST',	type:'Entertainment',	pop:105 },
-      { name: '8Adam1',    phone: '555-5678',    age: 60,   msg:'hello john1',  pub:'GDN',    type:'Health',      pop:85 }
-    ];
-
-
-    //     var friends = [
-    //   { name: '1John',    phone: '555-1212',    age: 10,    msg:'hello john', pub:'NYT',    type:'Life',      pop:4},
-    //   { name: '2Mary',    phone: '555-9876',    age: 70,    msg:'hello john', pub:'GDN',    type:'Politics',    pop:95 },
-    //   { name: '3Mike',    phone: '555-4321',    age: 1,   msg:'hello john', pub:'WAPOST', type:'Entertainment', pop:105 },
-    //   { name: '4Adam',    phone: '555-5678',    age: 24,    msg:'hello john', pub:'Times',    type:'Sports',      pop:65 },
-    //   { name: '5Mary1',    phone: '555-9876',    age: 37,   msg:'hello john1',  pub:'GDN',    type:'Politics',    pop:95 },
-    //   { name: '6Mike1',    phone: '555-4321',    age: 3,    msg:'hello john1',  pub:'WAPOST', type:'Finance', pop:5 },
-    //   { name: '7Adam1',    phone: '555-5678',    age: 9,    msg:'hello john1',  pub:'JJ',   type:'News',      pop:25 },
-    //   { name: '8Adam1',    phone: '555-5678',    age: 60,   msg:'hello john1',  pub:'GDN',    type:'Health',      pop:85 },
-    //   { name: '9Mary',    phone: '555-9876',    age: 20,    msg:'hello john', pub:'GDN',    type:'Politics',    pop:95 },
-    //   { name: '10Mike',    phone: '555-4321',    age: 7,    msg:'hello john', pub:'WAPOST', type:'Entertainment', pop:105 },
-    //   { name: '11Adam',    phone: '555-5678',    age: 73,   msg:'hello john', pub:'HUNT',   type:'Sports',      pop:65 },
-    //   { name: '12Mary1',    phone: '555-9876',    age: 103,   msg:'hello john1',  pub:'Times',    type:'Politics',    pop:95 },
-    //   { name: '13Mike1',    phone: '555-4321',    age: 40,    msg:'hello john1',  pub:'WAPOST', type:'Finance', pop:5 },
-    //   { name: '14Adam1',    phone: '555-5678',    age: 13,    msg:'hello john1',  pub:'GDN',    type:'Health',      pop:25 },
-    //   { name: '15Adam1',    phone: '555-5678',    age: 15,    msg:'hello john1',  pub:'JJ',   type:'Life',      pop:85 },
-    //   { name: '16Mary',    phone: '555-9876',    age: 93,   msg:'hello john', pub:'GDN',    type:'Politics',    pop:95 },
-    //   { name: '17Mike',    phone: '555-4321',    age: 8,    msg:'hello john', pub:'WAPOST', type:'Business',  pop:105 },
-    //   { name: '18Adam',    phone: '555-5678',    age: 63,   msg:'hello john', pub:'Times',    type:'Sports',      pop:65 },
-    //   { name: '19Mary1',    phone: '555-9876',    age: 42,    msg:'hello john1',  pub:'GDN',    type:'Politics',    pop:95 },
-    //   { name: '20Mike1',    phone: '555-4321',    age: 39,    msg:'hello john1',  pub:'HUNT', type:'Business',  pop:5 },
-    //   { name: '21Adam1',    phone: '555-5678',    age: 56,    msg:'hello john1',  pub:'GDN',    type:'Finance',     pop:25 },
-    //   { name: '22Adam1',    phone: '555-5678',    age: 88,    msg:'hello john1',  pub:'JJ',   type:'Sports',      pop:85 },
-    //   { name: '23Mary',    phone: '555-9876',    age: 84,   msg:'hello john', pub:'GDN',    type:'Politics',    pop:95 },
-    //   { name: '24Mike',    phone: '555-4321',    age: 75,   msg:'hello john', pub:'WAPOST', type:'Entertainment', pop:105 },
-    //   { name: '25Adam',    phone: '555-5678',    age: 61,   msg:'hello john', pub:'GDN',    type:'Sports',      pop:65 },
-    //   { name: '26Mary1',    phone: '555-9876',    age: 93,    msg:'hello john1',  pub:'JJ',   type:'Politics',    pop:95 },
-    //   { name: '27Mike1',    phone: '555-4321',    age: 27,    msg:'hello john1',  pub:'WAPOST', type:'Health',  pop:5 },
-    //   { name: '28Adam1',    phone: '555-5678',    age: 120,   msg:'hello john1',  pub:'GDN',    type:'Finance',     pop:25 },
-    //   { name: '29Adam1',    phone: '555-5678',    age: 36,    msg:'hello john1',  pub:'GDN',    type:'Health',      pop:85 },
-    //   { name: '30Mary',    phone: '555-9876',    age: 50,   msg:'hello john', pub:'GDN',    type:'Politics',    pop:95 },
-    //   { name: '31Mike',    phone: '555-4321',    age: 80,   msg:'hello john', pub:'HUNT', type:'Entertainment', pop:105 },
-    //   { name: '32Adam',    phone: '555-5678',    age: 90,   msg:'hello john', pub:'GDN',    type:'Health',      pop:65 },
-    //   { name: '33Mary1',    phone: '555-9876',    age: 100,   msg:'hello john1',  pub:'Times',    type:'Finance',   pop:95 },
-    //   { name: '34Mike1',    phone: '555-4321',    age: 89,    msg:'hello john1',  pub:'WAPOST', type:'Entertainment', pop:5 },
-    //   { name: '35Adam1',    phone: '555-5678',    age: 5,   msg:'hello john1',  pub:'GDN',    type:'Finance',     pop:25 },
-    //   { name: '36Adam1',    phone: '555-5678',    age: 15,    msg:'hello john1',  pub:'Times',    type:'Sports',      pop:85 },
-    //   { name: '37Julie1',   phone: '555-8765',    age: 29,    msg:'hello john1',  pub:'HUNT',   type:'Business',    pop:15 }
+    // var friends = [
+    //   { nam: '1John',    phone: '555-1212',    age: 10,		msg:'hello john',	pub:'NYT',		type:'Life',			pop:4},
+    //   { nam: '2Mary',    phone: '555-9876',    age: 70,		msg:'hello john',	pub:'GDN',		type:'Politics',		pop:95 },
+    //   { nam: '3Mike',    phone: '555-4321',    age: 1,		msg:'hello john',	pub:'WAPOST',	type:'Entertainment',	pop:105 },
+    //   { nam: '8Adam1',    phone: '555-5678',    age: 60,   msg:'hello john1',  pub:'GDN',    type:'Health',      pop:85 }
     // ];
 
+    var friends;
 
      var jsonData = (function(){
      	return {
@@ -186,24 +225,33 @@ phonecatServices
      		set: function (dataArray){
 			     for (var i = 0, len = dataArray.length; i < len; i++) {
 					   dataArray[i].id = i;
+             console.log('Added: ' + i);
 		        	 //lookup[array[i].id] = array[i];
 				    }
 				return dataArray;
+        // set: function (dataArray){
+        //    for (var i = 0, len = dataArray.length; i < len; i++) {
+        //      dataArray[i].id = i;
+        //      console.log('Added: ' + i);
+        //        //lookup[array[i].id] = array[i];
+        //     }
+        // return dataArray;
+
 		    }
      	};
      }());
 
     return {
-      friends:function(){
-      	 if(initData === false){
+      friends:function(_friends){
+      	 if(Object.prototype.toString.call(_friends) === '[object Array]' && _friends.length > 0 && initData === false){
       	 	
       	 	initData = true;
+          console.log('try to add id to each object');
           // calling different assets
           // if all the reuqest are done
           // return call jsonDate.set(friends)
+      	 	return jsonData.set(_friends);
 
-
-      	 	return jsonData.set(friends);
       	 }else{
 
       	 	 return jsonData.get();
@@ -211,22 +259,137 @@ phonecatServices
       },
       setFriends:function(_friends){
       	console.log('setting friends');
-      	friends = _friends;
+        friends = _friends;
       }
     };
 
   })
 
 
-.factory('asyncService',['$resource', '$q', '$http', function ($resource, $q, $http) {
+.factory('articleFormatter',function(){
+  return{
+
+    merge: function(articleObject){
+
+      //console.log('ObjectType: ' + typeof(articleObject));
+      var error = true;
+      var dataArray  = [];
+
+      if (Object.prototype.toString.call( articleObject ) !== '[object Array]' || articleObject.length < 1 ){
+        console.log('Empty object 1');
+        return;
+      }
+      var aLen = articleObject.length;
+
+      for(var c = 0; c < aLen; c++){
+
+        var data = articleObject[c].data;
+        if(data === undefined){
+            return;
+        }
+        for(var prop in data){
+              console.log('Prop name: ' + prop);
+
+
+              //sorting the data array by publication names to satisfy reader experience.
+              var articles = data[prop];
+              if(Object.prototype.toString.call( articles ) === '[object Array]' && articles.length > 0 ){
+
+                  var arLen = articles.length;
+
+                  for(var cc = 0; cc < arLen; cc++ ){
+                    //dataArray[i].id = i;
+                    var article = articles[cc];
+                    article['pub'] = prop;
+                    if(article.topCommentNum > 0 && article.numComments > 0){
+                         var score = article.topCommentNum / article.numComments ; 
+                         article['score'] = parseInt(score * 100);
+                    }else {
+                       article['score'] = 0;
+                    }
+                    
+                    dataArray.push(article);
+                    console.log('Added article: ' + article.title);
+
+                    for(var pprop in article){
+
+                      console.log('ObjectPropName ' + pprop +  ' value: ' + article[pprop]);
+                    } //for
+
+                  }// for 
+
+              } // if 
+          } //for
+
+        } //for
+
+        return dataArray;
+      
+
+
+
+
+    // console.log('prop: ' + prop);
+
+      
+
+
+
+    // var resL = results.length;
+    // console.log('results length ' + resL)
+
+    // for(var prop in results){
+    //   console.log('Prop name: ' + prop);
+    // }
+
+            // for(var c = 0; c < resL; c++){
+
+            //   var obj = results[c];
+            //   var oData = obj.data;
+            // }
+
+  //   var objectName = Object.prototype.toString.call(articles);
+  //   console.log('objectName: ' + objectName);
+  //   var objectsArray;
+  //   for(var prop in articles){
+  //     objectsArray = (articles[prop]);
+  //   }
+
+
+  // var resL = objectsArray.length;
+  //   for(var c = 0; c < resL; c++){
+
+  //     var obj = objectsArray[c];
+  //     console.log('Object: ' + obj);
+
+  //     //var arrayLength = oData.rottentomatoes.length;
+
+  //     for(var prop in obj){
+  //       console.log('prop: ' + prop  + ' - value: ' + obj[prop]);
+  //     }
+
+  //   }
+
+
+      //return articleObjectsArray;
+      return [];
+    },
+    sort: function(mergedArticleArray){
+
+
+      //return mergedArticleArray;
+      return [];
+    }
+
+  };
+})
+.factory('asyncService',['$resource', '$q', '$http', 'articleFormatter', 'data', function ($resource, $q, $http, articleFormatter, data) {
       return {
         loadDataFromUrls: function(urls) {
          
           var deferred = $q.defer();
           var urlCalls = [];
           //var theurl = urls[0];
-
-
 
            angular.forEach(urls, function(url) {
             urlCalls.push($http.get(url));
@@ -238,22 +401,12 @@ phonecatServices
           .then(
             function(results) {
 
-            var resL = results.length;
-            for(var c = 0; c < resL; c++){
+            var _a = articleFormatter.merge(results);
+            deferred.resolve(_a);
 
-              var obj = results[c];
-              var oData = obj.data;
-
-
-              var arrayLength = oData.rottentomatoes.length;
-              for (var i = 0; i < arrayLength; i++) {
-                 alert(c + ' URL:' + oData.rottentomatoes[i].url);
-                //Do something
-              }
-            }
-
-            deferred.resolve(results) 
+            
           }, function(reason) {
+
   // error: handle the error if possible and
   //        resolve promiseB with newPromiseOrValue,
   //        otherwise forward the rejection to promiseB
@@ -261,7 +414,9 @@ phonecatServices
         // handle the error and recover
         //  return newPromiseOrValue;
       //}
-                alert('reason: ' + reason.toString());
+
+             // return deferred.resolve(_a);
+
               return $q.reject(reason);
             }
         );
@@ -356,7 +511,7 @@ phonecatServices
 	 				 	positions.end = positions.start + 1;
 	 				 }
 	 				return ;
-               	 },
+          },
                	 get:function(){
                	 	return tagSortCriteria.getPositions();
                	 }
@@ -378,7 +533,10 @@ phonecatServices
 		 },
  		 setPub: function(index){
 		 	tagSortCriteria.pubMode(index);
-		 }, 		 
+		 },
+     setScore: function(index){
+      tagSortCriteria.scoreMode(index);
+     }, 		 
 		 setType: function(index){
 		 	tagSortCriteria.typeMode(index);
 		 },
@@ -401,18 +559,21 @@ phonecatServices
       var searchStr = searchObj[query.mode];
 
 
+        //if click the same string same as the selection before, it will change to age mode.
+        //the page will be position to the top
 
 				if(searchStr === prevSearchStr ){
 		    		
 		    		tagSortCriteria.setSelectedId(-1);
 
-		    		if(query.mode === tagSortCriteria.POP() || query.mode === tagSortCriteria.AGE()){
-		    			tagSortCriteria.setQueryReverse(!query.reverse);
-
+             if (query.mode === tagSortCriteria.POP() || query.mode === tagSortCriteria.AGE() || query.mode === tagSortCriteria.SCORE()){
+		    			//tagSortCriteria.setQueryReverse(!query.reverse);
+             // return;
 		    		}else {
 		    			tagSortCriteria.setQueryMode(tagSortCriteria.AGE());
 		    			tagSortCriteria.setQueryReverse(true);
 		    		}
+
 		    		var sortedParentArray = orderBy(data.friends(), query.mode ,query.reverse);
 		    		data.setFriends(sortedParentArray);
 		    		var startingPositions = { start:-1, end: -1};
@@ -428,14 +589,15 @@ phonecatServices
 			//else update query
 
 
-			var sortedParentArray = orderBy(data.friends(), query.mode ,query.reverse);
 			
-			findMatchingValuePositions.set(sortedParentArray, searchStr);
+			
+			var sortedParentArray = orderBy(data.friends(), query.mode ,query.reverse);
 
-			if(query.mode != tagSortCriteria.POP() && query.mode != tagSortCriteria.AGE()){
+			if(query.mode == tagSortCriteria.PUB() || query.mode == tagSortCriteria.TYPE()){
 
-							
-
+              //var sortedParentArray = orderBy(data.friends(), query.mode ,query.reverse);
+			       //IMPORTANT UNCOMMENT				
+              findMatchingValuePositions.set(sortedParentArray, searchStr);
 							var positions = tagSortCriteria.getPositions();
 							//var positions = tagSortCriteria.getPositions();
 							console.log('positions: start', positions.start);
@@ -458,6 +620,7 @@ phonecatServices
 
 			}else{ //POP or AGE Mode
 
+        
 				data.setFriends(sortedParentArray);
 			}
 

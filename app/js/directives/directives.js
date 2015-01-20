@@ -33,6 +33,15 @@ phonecatDirectives.directive('contactCard',['tagSorterController',function(tagSo
 					dataController.cleanFriends(index);
 
 				};
+				scope.clickScore = function(index){
+
+					console.log('click in the link function', index);
+					//dataController.cleanFriends(index);
+					tagSorterController.setScore(index);
+					tagSorterController.sorter(index);
+					dataController.cleanFriends(index);
+
+				};				
 
 
 				scope.clickPub = function(index){

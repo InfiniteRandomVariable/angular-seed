@@ -18,13 +18,15 @@ phonecatApp.config(['$routeProvider','ArticlesCtrlResolve',
         templateUrl: 'partials/sections.html',
         controller: 'PhoneListCtrl'
         ,
-         resolve: ArticlesCtrlResolve
+         resolve: {
+            articles: ArticlesCtrlResolve.Articles
+         }
       }
       ).
-      when('/phones/:phoneId', {
-        templateUrl: 'partials/phone-detail.html',
-        controller: 'PhoneDetailCtrl'
-      }).
+      // when('/phones/', {
+      //   templateUrl: 'partials/phone-detail.html',
+      //   controller: 'PhoneDetailCtrl'
+      // }).
       otherwise({
          redirectTo: '/phones'
      });

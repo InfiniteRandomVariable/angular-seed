@@ -373,3 +373,16 @@ app.post('/', function(req, res, next) {
 ##EXPRESS ANGULAR
 https://www.npmjs.com/package/generator-express-angular
 
+##Infinite Scrolling
+http://binarymuse.github.io/ngInfiniteScroll/
+
+##AMAZING Angular Doc and patterns - service vs factory vs provider and promises 
+http://tylermcginnis.com/angularjs-factory-vs-service-vs-provider/
+##Directive definitive guide
+http://weblogs.asp.net/dwahlin/creating-custom-angularjs-directives-part-i-the-fundamentals
+
+
+##Todo
+//change the topcommentnum and commentNum to ratio.
+billboard, change the tags from movie to vid
+

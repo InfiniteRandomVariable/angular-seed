@@ -1,21 +1,31 @@
 
 <!-- <h1>{{title.str}}</h1> -->
-<li  ng-repeat-start="friend in friends track by friend.id" >
-<h2>Directive: {{$index}}</h2>
-<p> name:{{ friend.name}}
-objectId:{{friend.id}}</p>
 
-
-<div class="btn-group">
-	<label id='{{$index}}' ng-click="clickAge(friend.id);scrollTo(friend.id);"  class="btn btn-primary"  ng-class="{test: checkValue1(), test2:checkValue3(5)}">   age: {{friend.age}} </label>
-	<label ng-click="clickPub(friend.id);scrollTo(friend.id);" class="btn btn-primary" >pub: {{friend.pub}} </label>
-	<label ng-click="clickPop(friend.id);scrollTo(friend.id);" class="btn btn-primary" >pop:{{friend.pop}}</label>
-	<label ng-click="clickType(friend.id);scrollTo(friend.id);"class="btn btn-primary"  >type:{{friend.type}}</label>
-
-</div>
+<!-- <li  ng-repeat-start="friend in friends track by friend.id" > -->
+<div class="row clearfix" ng-repeat-start="friend in friends track by friend.id">
+  <div class="col-md-12 column">
+    
  
-</li>
- <div ng-repeat-end> </div>
+    <h2><a href='{{friend.url}}'> {{friend.title}} </a></h2>
+    <p> {{friend.topComment}}</p>
+
+
+<!-- <p> ObjectId:{{friend.id}} Directive: {{$index}}</p> -->
+
+
+    <div class="btn-group">
+	       <label id='{{$index}}' ng-click="clickScore(friend.id);scrollTo(friend.id);"  class="btn btn-primary"  ng-class="{test: checkValue1(), test2:checkValue3(5)}">   score: {{friend.score}} </label>
+	       <label ng-click="clickPub(friend.id);scrollTo(friend.id);" class="btn btn-primary" >pub: {{friend.pub}} </label>
+	       <label ng-click="clickPop(friend.id);scrollTo(friend.id);" class="btn btn-primary" >pop: {{friend.topCommentNum}}</label>
+	       <label ng-click="clickType(friend.id);scrollTo(friend.id);"class="btn btn-primary"  >type: {{friend.tag}}</label>
+
+    </div>
+
+ 
+      
+    </div>
+  </div>
+  <div ng-repeat-end> </div>
 
 
 
