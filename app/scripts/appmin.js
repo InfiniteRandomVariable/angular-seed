@@ -1,0 +1,1 @@
+var phonecatApp=angular.module("phonecatApp","ngRoute phonecatControllers phonecatFilters phonecatServices phonecatDirectives ui.bootstrap".split(" "));phonecatApp.config(["$routeProvider","ArticlesCtrlResolve",function(a,b){a.when("/phones",{templateUrl:"partials/sections.html",controller:"PhoneListCtrl",resolve:{articles:b.Articles}}).otherwise({redirectTo:"/phones"})}]);

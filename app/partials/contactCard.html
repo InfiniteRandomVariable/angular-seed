@@ -6,7 +6,7 @@
   <div class="col-md-12 column">
     
  
-    <h2><a href='{{friend.url}}'> {{friend.title}} </a></h2>
+    <h4><a href='{{friend.url}}'> {{friend.title}} </a></h4>
     <p> {{friend.topComment}}</p>
 
 
@@ -14,10 +14,11 @@
 
 
     <div class="btn-group">
-	       <label id='{{$index}}' ng-click="clickScore(friend.id);scrollTo(friend.id);"  class="btn btn-primary"  ng-class="{test: checkValue1(), test2:checkValue3(5)}">   score: {{friend.score}} </label>
-	       <label ng-click="clickPub(friend.id);scrollTo(friend.id);" class="btn btn-primary" >pub: {{friend.pub}} </label>
-	       <label ng-click="clickPop(friend.id);scrollTo(friend.id);" class="btn btn-primary" >pop: {{friend.topCommentNum}}</label>
-	       <label ng-click="clickType(friend.id);scrollTo(friend.id);"class="btn btn-primary"  >type: {{friend.tag}}</label>
+	       <label ng-click="clickScore(friend.id)"  class="btn btn-primary">   score: {{friend.score}} </label> 
+         <label ng-click="clickPop(friend.id)" class="btn btn-primary" >pop: {{friend.numComments}}</label>
+	       <label class="btn btn-primary" >{{friend.pub}} </label>
+	       <!-- <label ng-click="clickType(friend.id);scrollTo(friend.id);"class="btn btn-primary" >{{friend.tag}}</label> -->
+         <label class="btn btn-primary" >{{friend.tag}}</label>
 
     </div>
 

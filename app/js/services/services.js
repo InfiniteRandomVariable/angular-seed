@@ -4,6 +4,7 @@
 
 var phonecatServices = angular.module('phonecatServices', ['ngResource']);
 
+
 phonecatServices
 
 .constant('ArticlesCtrlResolve', {
@@ -22,9 +23,12 @@ phonecatServices
       var durationMins = 30;
 
       var time = parseInt(d1.getTime()/60/1000/durationMins);
+      var base = "http://d2invxie986h3w.cloudfront.net";
     //var base = "http://data.hotoppy.com";
-    var base = "http://s3-us-west-1.amazonaws.com/data.hotoppy.com";
-    //var publications = ["amazonbooks", "atlantic", "billboard", "guardian", "hulu", "nydailynews", "nytimes", "rottentomatoes", "techcrunch", "wired", "youtube"];
+    //var base = "http://s3-us-west-1.amazonaws.com/data.hotoppy.com";
+
+    //BUG:if the return data is low. The page may not loaded. Reproduce: allow only one request to return successfully. Content will not be displayed.
+
     var publications = ["nytimes",
                         "guardian",
                         "atlantic",
@@ -35,38 +39,23 @@ phonecatServices
                         "bloomberg", 
                         "techcrunch", 
                         "wsj", 
-                        "amazonbooks", 
-                        "rottentomatoes", 
+                        "amzbooks",
+                        // "people", 
+                        "rtomatoes", 
                         "billboard"  ];
 
     var urls = [];
     var pubLen = publications.length;
     for (var c = 0; c < pubLen; c++ ){
-      //789803
-      //var theU = base + '/' + publications[c] + '/' + time.toString() + '.json';
-      var theU = base + '/' + publications[c] + '/' + '789850' + '.json';
+
+    //var time = 789803
+    //var time =  789966
+    // var time = 789907
+     var theU = base + '/' + publications[c] + '/' + time + '.json';
       console.log(theU);
       urls.push(theU);
     }
 
-    // var urls = ["http://s3-us-west-1.amazonaws.com/data.hotoppy.com/nytimes/1421567.json",
-    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/guardian/1421619.json",
-    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/atlantic/1421618.json",
-    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/nydailynews/1421619.json",
-    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/youtube/1421619.json",
-    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/hulu/1421619.json",
-    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/wired/1421619.json",
-    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/bloomberg/1421620.json",
-    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/techcrunch/1421618.json",
-    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/wsj/1421619.json",
-    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/amazonbooks/1421620.json",
-    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/rottentomatoes/1421619.json",
-    //             "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/billboard/1421620.json"];
-
-     //var urls = ["http://s3-us-west-1.amazonaws.com/data.hotoppy.com/amazonbooks/1421569.json"];                
-
-
-   // var urls = ["http://s3-us-west-1.amazonaws.com/data.hotoppy.com/billboard/1421396.json", "http://s3-us-west-1.amazonaws.com/data.hotoppy.com/rottentomatoes/789.json"];
     return asyncService.loadDataFromUrls(urls);
   }
 })
@@ -243,6 +232,7 @@ phonecatServices
 
     return {
       friends:function(_friends){
+          console.log('about to call _friends');
       	 if(Object.prototype.toString.call(_friends) === '[object Array]' && _friends.length > 0 && initData === false){
       	 	
       	 	initData = true;
@@ -275,7 +265,7 @@ phonecatServices
       var error = true;
       var dataArray  = [];
 
-      if (Object.prototype.toString.call( articleObject ) !== '[object Array]' || articleObject.length < 1 ){
+      if (articleObject.constructor.toString().indexOf("Array") < 0  || articleObject.length < 1 ){
         console.log('Empty object 1');
         return;
       }
@@ -283,9 +273,13 @@ phonecatServices
 
       for(var c = 0; c < aLen; c++){
 
-        var data = articleObject[c].data;
+        //WARNING: this line is for q.deferred call which doesn't have a data property;
+        var data = articleObject[c];
+        //WARNING: this line is for http call as it has data property;
+        //var data = articleObject[c].data;
         if(data === undefined){
-            return;
+            console.log('undefined data')
+            continue;
         }
         for(var prop in data){
               console.log('Prop name: ' + prop);
@@ -293,7 +287,7 @@ phonecatServices
 
               //sorting the data array by publication names to satisfy reader experience.
               var articles = data[prop];
-              if(Object.prototype.toString.call( articles ) === '[object Array]' && articles.length > 0 ){
+              if(articles.constructor.toString().indexOf("Array") > -1 && articles.length > 0 ){
 
                   var arLen = articles.length;
 
@@ -384,15 +378,52 @@ phonecatServices
   };
 })
 .factory('asyncService',['$resource', '$q', '$http', 'articleFormatter', 'data', function ($resource, $q, $http, articleFormatter, data) {
+
+
+        function fetchHttp(url, requestCounter) {
+    // There will always be a promise so always declare it.
+            var deferred = $q.defer();
+            // else- not in cache 
+            $http.get(url).success(function(data){
+                // Store your data or what ever.... 
+                // Then resolve
+                deferred.resolve(data);
+                
+            }).error(function(data, status, headers, config) {
+
+                var pubName = config.url.match(/(people|nytimes|wsj|billboard|hulu|rottentomatoes|amazonbooks|techcrunch|bloomberg|wired|youtube|nydailynews|atlantic|guardian){1}/ig);
+                 var dataObj;
+                 console.log('pubName1: ' + config.url)
+                 //console.log('completedRequestCounter: ' + requestCounter())
+                if(pubName && pubName.length> 0){
+
+                          var pub = pubName[0];
+                          var dataObj = {pub: []};
+                          console.log('pubName2: ' + pub)
+                          deferred.resolve(dataObj); 
+                      }
+
+                //deferred.reject("Error: request returned status " + status); 
+          });
+          return deferred.promise;
+
+      };
+
+
       return {
         loadDataFromUrls: function(urls) {
          
           var deferred = $q.defer();
           var urlCalls = [];
+         
           //var theurl = urls[0];
 
            angular.forEach(urls, function(url) {
-            urlCalls.push($http.get(url));
+            urlCalls.push(
+
+              fetchHttp(url)
+
+              );
 
            });
 
@@ -401,11 +432,14 @@ phonecatServices
           .then(
             function(results) {
 
+            console.log("success");
             var _a = articleFormatter.merge(results);
             deferred.resolve(_a);
 
             
           }, function(reason) {
+
+            console.log("fail");
 
   // error: handle the error if possible and
   //        resolve promiseB with newPromiseOrValue,
@@ -417,7 +451,7 @@ phonecatServices
 
              // return deferred.resolve(_a);
 
-              return $q.reject(reason);
+             return $q.reject(reason);
             }
         );
           return deferred.promise;

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="phonecatApp"  class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"><!--<![endif]-->
+<html lang="en" ng-app="phonecatApp" ng-strict-di class=" js flexbox canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"><!--<![endif]-->
     
     
     <head>
@@ -20,34 +20,39 @@
       console.log(parseInt(Math.floor(d1.getTime()/ 1000000), 10)); //30 minutes per unit
 
     </script>
+
+
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.min.js"></script>
+  <script src="bower_components/angular-resource/angular-resource.min.js"></script> 
+
+  <script src="js/apps/appmin.js"></script>
+  <script src="js/directives/directivesmin.js"></script>
+  <!-- <script src="js/controllers/controllers_a.js"></script> -->
+  <script src="js/filters/filtersmin.js"></script>
+  <!-- <script src="js/services/services_a.js"></script> -->
+   <script src="js/services/servicesmin1.js"></script> 
+
+
         
         
   <!-- <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"> -->
   <link rel="stylesheet" href="css/app.css">
-  <link rel="stylesheet" href="css/normalize.min.css">
+  <!-- <link rel="stylesheet" href="css/normalize.min.css"> -->
   <link rel="stylesheet" href="css/main.css">
-  <script src="js/ga.js"></script>
-  <script src="js/modernizr-2.6.1-respond-1.1.0.min.js"></script>
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+ <!-- <script src="js/ga.js"></script> -->
 
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
-  <script src="bower_components/angular-resource/angular-resource.js"></script>
-  <script src="bower_components/ui-bootstrap-custom-build/ui-bootstrap-custom-0.12.0.min.js"></script>
+  <!-- <script src="js/modernizr-2.6.1-respond-1.1.0.min.js"></script> -->
+
   <script src="bower_components/ui-bootstrap-custom-build/ui-bootstrap-custom-tpls-0.12.0.min.js"></script>
-  <script src="js/apps/app.js"></script>
-  <script src="js/directives/directives.js"></script>
-  <script src="js/controllers/controllers.js"></script>
-  <script src="js/filters/filters.js"></script>
-  <script src="js/services/services.js"></script>
-  <style>
-    .test {
-          color: red;
-        }
-    .test2{
-        color:blue;
-        }
-  </style>
+
+  <!-- <script src="bower_components/ui-bootstrap-custom-build/ui-bootstrap-custom-0.12.0.min.js"></script> -->
+
+  
+
+
+
   
 </head>
 <body>
@@ -56,7 +61,7 @@
      <![endif]-->
     <div class="header-container">
         <header class="wrapper clearfix">
-            <h1 class="title">HOTOPPY</h1>
+            <h1 class="title"><strong>HOTOPPY - Top News, Top Comments</strong></h1>
          <!--   <nav>
                 <ul>
                     <li><a href="http://www.initializr.com/try#">Category 1</a></li>

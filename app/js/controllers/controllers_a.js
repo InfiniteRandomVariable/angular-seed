@@ -9,34 +9,34 @@ var PUB = 'PUB';
 var TYPE = 'TYPE';
 var AGE = 'AGE';
 
-phonecatControllers.controller('PhoneListCtrl', ['$scope', 'data','articles',
-  function($scope, data , articles) {
+phonecatControllers.controller('PhoneListCtrll', ['$scope', 'data','articles', 'tagSorterController','$filter',
+  function($scope, data , articles, tagSorterController, $filter) {
 
-    // var _data = articles;
+//HAHA!!!
+    var _data = articles;
 
-    // console.log(typeof(_data));
-    // //data.friends(_data);
-    // var fData = data.friends(_data);
-    // $scope.friends = fData;
-    // data.setFriends(fData);
-    // $scope.orderProp = 'age';
-    // $scope.searchMode = AGE;
-
+    if (_data.constructor.toString().indexOf("Array") < 0){
+      console.log('not an array');
+    }else{
+      console.log('Array size ' + _data.length.toString());
+    }
 
 
-   
-    $scope.friends =  data.friends(articles);
-    data.setFriends($scope.friends);
+    var aLen = _data.length;
+
+    console.log(typeof(_data));
+    var fData = data.friends(_data);
+
     $scope.orderProp = 'age';
     $scope.searchMode = AGE;
+    var sortedParentArray = $filter('orderBy')(fData, $scope.orderProp , false);
 
+    data.setFriends(sortedParentArray);
 
-
-          }]
-     )
-
-
+    }])
 .controller('dataController',['$scope','data', 'tagSorterController','$location','$anchorScroll','tagSortCriteria', function($scope,data, tagSorterController,$location,$anchorScroll, tagSortCriteria){
+
+//HAHA!!!
 
         $scope.scrollTo = function(id) {
               var positions = tagSortCriteria.getPositions();
@@ -45,13 +45,13 @@ phonecatControllers.controller('PhoneListCtrl', ['$scope', 'data','articles',
               $anchorScroll();
           }
 
+
 //inject only the 
         this.cleanFriends = function(index){
           console.log('data controller cleanFriends');
           $scope.friends = data.friends();
 
+
         };
 
 }]);
-
-

@@ -28,7 +28,6 @@ phonecatApp.config(['$routeProvider','ArticlesCtrlResolve',
       //   controller: 'PhoneDetailCtrl'
       // }).
       otherwise({
-        //previously phones
          redirectTo: '/phones'
      });
   }]);

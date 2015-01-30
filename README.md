@@ -386,3 +386,39 @@ http://weblogs.asp.net/dwahlin/creating-custom-angularjs-directives-part-i-the-f
 //change the topcommentnum and commentNum to ratio.
 billboard, change the tags from movie to vid
 
+##Add timeout to Q object
+https://egghead.io/lessons/angularjs-q-all 
+
+##interceptor and HTTP service
+http://stackoverflow.com/questions/21918539/angularjs-using-an-interceptor-to-handle-http-404s-promise-not-defined-error
+http://weblog.west-wind.com/posts/2014/Oct/24/AngularJs-and-Promises-with-the-http-Service
+http://plnkr.co/edit/o4XB8E52BP0IdmTwu1Gl?p=preview
+
+
+##AWS Domains
+http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/CreatingNewSubdomain.html
+##AngularJS starter guide for AWS and google open ID integration
+http://www.ng-newsletter.com/posts/aws-js-sdk.html
+
+##Require.js and Angularjs
+http://leog.me/log/making-sense-of-requirejs-with-angularjs
+http://stackoverflow.com/questions/12529083/does-it-make-sense-to-use-require-js-with-angular-js
+http://kielczewski.eu/2013/04/integrating-angularjs-with-requirejs/
+http://forum.ionicframework.com/t/official-guide-for-migration-of-native-angularjs-app-to-ionic/16357
+https://github.com/pheno7/angular-requirejs-seed
+
+##loading external website
+https://blog.nraboy.com/2014/07/launch-external-urls-ionicframework/
+http://intown.biz/2014/03/30/cordova-ionic-links-in-browser/
+https://gist.github.com/rewonc/e53ad3a9d6ca704d402e
+http://stackoverflow.com/questions/15666258/phonegap-build-open-external-page-in-inappbrowser-or-childbrowser-with-no-tool
+http://stackoverflow.com/questions/15191793/window-close-equivalent-in-phonegap-with-inappbrowser/15981972#15981972
+
+##CORS (No 'Access-Control-Allow-Origin' header is present on the requested resource)
+http://stackoverflow.com/questions/12358173/correct-s3-cloudfront-cors-configuration/24459590#24459590
+http://stackoverflow.com/questions/20035101/no-access-control-allow-origin-header-is-present-on-the-requested-resource
+http://stackoverflow.com/questions/17533888/s3-access-control-allow-origin-header
+
+https://iphonedevlog.wordpress.com/2013/06/27/implementing-inappbrowser-into-a-cordova-phonegap-project/
+https://www.youtube.com/watch?v=F-GlVrTaeH0
+
