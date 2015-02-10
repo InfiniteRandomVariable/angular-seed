@@ -2,7 +2,7 @@ var phonecatServices = angular.module("phonecatServices", ["ngResource"]);
 
 function articleFormatterFunc($filter){return{merge:function(b){var k = $filter; var d=[];if(0>b.constructor.toString().indexOf("Array")||1>b.length)console.log("Empty object 1");else{for(var l=b.length,e=0;e<l;e++){var f=b[e];if(void 0===f)console.log("undefined data");else for(var g in f){var c=f[g];if(-1<c.constructor.toString().indexOf("Array")&&0<c.length)for(var m=c.length,h=0;h<m;h++){var a=c[h];a.pub=g;a.score=0<a.topCommentNum&&0<a.numComments?parseInt(a.topCommentNum/a.numComments* 100):0;d.push(a)}}}return d=k("orderBy")(d,"age",!0)}},sort:function(b){return[]}}};
 phonecatServices.constant("ArticlesCtrlResolve", {Articles:function(asyncService) {
-  for (var e = parseInt((new Date).getTime() / 60 / 1E3 / 30), a = "nytimes guardian atlantic nydailynews youtube hulu wired bloomberg techcrunch wsj amzbooks rtomatoes billboard".split(" "), d = [], f = a.length, g = 0;f > g;g++) {
+  for (var e = parseInt((new Date).getTime() / 60 / 1E3 / 30), a = "nytimes guardian atlantic nydailynews youtube hulu wired techcrunch wsj amzbooks rtomatoes billboard people".split(" "), d = [], f = a.length, g = 0;f > g;g++) {
     var c = "http://d2invxie986h3w.cloudfront.net/" + a[g] + "/" + e + ".json";
     console.log(c);
     d.push(c);
